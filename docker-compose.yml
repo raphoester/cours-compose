@@ -1,13 +1,19 @@
 version: "3.9"
 services:
   database:
-    image: mongo
+    image: mysql
+    env_file:
+      - .env
+    container_name: mysql
 
   web:
+    build: web
+    container_name: apache
     depends_on:
       - database
-    build: web/
     ports:
       - 8080:80
     env_file:
       - .env
+    volumes:
+      - ./index.php:/var/www/html/index.php:ro
